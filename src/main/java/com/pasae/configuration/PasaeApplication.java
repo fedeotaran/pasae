@@ -35,17 +35,11 @@ public class PasaeApplication {
 
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
-			// @formatter:off
 			http.authorizeRequests()
-					.antMatchers(HttpMethod.OPTIONS,"/*/**").permitAll()
-					.antMatchers("/resources/**").permitAll()
 				.anyRequest().authenticated()
 				.and().exceptionHandling()
 			      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
-				.and().logout().logoutSuccessUrl("/").permitAll()
-				//.anyRequest().access("#oauth2.hasScope('read')")
-				;
-			// @formatter:on
+				.and().logout().logoutSuccessUrl("/").permitAll();
 		}
 
 		@Override
