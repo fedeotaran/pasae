@@ -3,7 +3,9 @@ package com.pasae.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,9 +16,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "domain")
+@EntityScan(basePackages = "domain")
 @RestController
 public class PasaeApplication {
 
@@ -31,13 +36,13 @@ public class PasaeApplication {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			// @formatter:off
-			http
-				// Just for laughs, apply OAuth protection to only 2 resources
-				
-				.authorizeRequests()
-				.antMatchers(HttpMethod.OPTIONS,"/*/**").permitAll()
-				.antMatchers("/resources/**").permitAll()
-				//.anyRequest().authenticated()
+			http.authorizeRequests()
+					.antMatchers(HttpMethod.OPTIONS,"/*/**").permitAll()
+					.antMatchers("/resources/**").permitAll()
+				.anyRequest().authenticated()
+				.and().exceptionHandling()
+			      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
+				.and().logout().logoutSuccessUrl("/").permitAll()
 				//.anyRequest().access("#oauth2.hasScope('read')")
 				;
 			// @formatter:on
