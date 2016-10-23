@@ -1,26 +1,25 @@
- package com.pasae;
- 
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+package com.pasae.configuration;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
- 
-@Configuration
-public class WebConfig {
 
-    @Bean
-    public FilterRegistrationBean corsFilter() {
+@Configuration
+public class CustomCorsConfiguration {
+
+	@Bean
+    public CorsFilter corsFilter() {
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(true); // you USUALLY want this
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
         source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(0);
-        return bean;
-	}
+        return new CorsFilter(source);
+    }
 }

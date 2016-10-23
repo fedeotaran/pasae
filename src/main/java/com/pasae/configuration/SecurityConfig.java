@@ -1,4 +1,4 @@
-package com.pasae;
+package com.pasae.configuration;
 
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.context.annotation.Configuration;
