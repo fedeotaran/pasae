@@ -1,4 +1,4 @@
- package com.pasae.configuration;
+ package com.pasae;
  
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
